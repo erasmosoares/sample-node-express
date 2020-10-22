@@ -77,6 +77,16 @@ https://github.com/pugjs/pug
 ```
 npm i pug
 ```
+
+## Compression
+
+Compresses the HTTP response that is sent to the client
+
+https://github.com/expressjs/compression
+
+```
+npm i compression
+```
 > In production make sure to install SSL support to use HTTPS
 
 
