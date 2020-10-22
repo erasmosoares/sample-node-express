@@ -3,6 +3,7 @@ const app = express();
 const Joi = require('joi'); // The most powerful schema description language and data validator for JavaScript.
 const morgan = require('morgan'); // HTTP request logger middleware for node.js.
 const helmet = require('helmet'); // Helmet helps you secure your Express apps by setting various HTTP headers.
+const cors = require("cors"); //CORS is responsible for allowing or not asynchronous requests from other domains.
 
 //Custom packages
 const logger = require('./logger');
@@ -14,6 +15,12 @@ app.use(express.static('public')); //access the sample static file
 
 app.use(helmet());
 app.use(morgan('tiny'));
+
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 //Custom middleware
 app.use(logger);

@@ -54,4 +54,15 @@ https://github.com/expressjs/morgan#readme
 npm i morgan
 ```
 
+## Cors
+
+Cors is responsible for allowing or not asynchronous requests from other domains. If we are developing an API that will serve data for any kind of client-side applications, we need to enable the CORS’s middleware for the endpoints become public.
+
+https://github.com/expressjs/cors#readme
+
+```
+npm i cors
+```
+> In production make sure to install SSL support to use HTTPS
+
 
