@@ -5,7 +5,7 @@ This is a sample RESTful API with Express (Node.js). You can use it as a startin
 
 # Usage
 
-Clone this repo and install the packages using: 
+Clone this repo and install the packages: 
 
 ```
 npm i
@@ -66,6 +66,16 @@ https://github.com/expressjs/cors#readme
 
 ```
 npm i cors
+```
+
+## Pug
+
+You can use pug to return HTML markup to the client
+
+https://github.com/pugjs/pug
+
+```
+npm i pug
 ```
 > In production make sure to install SSL support to use HTTPS
 

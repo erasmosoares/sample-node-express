@@ -25,11 +25,20 @@ app.use(cors({
 //Custom middleware
 app.use(logger);
 
+//template engine
+app.set('view engine', 'pug');
+app.set('views', './views'); //defaul folder is view
+
 const books = [
     { id: 1, name: 'Clean Architecture' },
     { id: 2, name: 'FactFulness' },
     { id: 3, name: 'The Pragmatic Programmer' },
 ];
+
+//Loading template engine
+app.get('/', (req, res) => {
+    res.render('index', { title: 'My pug', message: 'This is a tribute to my pug called Sansa' });
+});
 
 app.get('/api/books', (req, res) => {
     res.send(books);
