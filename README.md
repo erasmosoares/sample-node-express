@@ -5,8 +5,12 @@ This is a sample RESTful API with Express (Node.js). You can use it as a startin
 
 # Usage
 
-Fork this repo and use nodemon to run the server:
+Clone this repo and install the packages using: 
 
+```
+npm i
+```
+Use nodemon to run the server:
 > nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
 
 In your terminal console execute:
