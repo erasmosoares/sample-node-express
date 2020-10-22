@@ -30,7 +30,7 @@ app.get('/api/books', (req, res) => {
 
 
 app.post('/api/books', (req, res) => {
-    const { error } = validateGenre(req.body);
+    const { error } = validateBook(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     const book = {
@@ -68,12 +68,13 @@ app.get('/api/books/:id', (req, res) => {
     res.send(book);
 });
 
-function validateBook(book) {
-    const schema = {
-        name: Joi.string().min(3).required()
-    };
 
-    return Joi.validate(book, schema);
+function validateBook(book) {
+    const schema = Joi.object({
+        name: Joi.string().min(3).required()
+    });
+
+    return schema.validate(book);
 }
 
 const port = process.env.PORT || 3000;
