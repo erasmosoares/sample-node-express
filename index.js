@@ -1,97 +1,58 @@
+/**
+ * Express is a minimal and flexible Node.js web application framework 
+ * that provides a robust set of features for web and mobile applications.
+ */
 const express = require('express');
 const app = express();
-const Joi = require('joi'); // The most powerful schema description language and data validator for JavaScript.
-const morgan = require('morgan'); // HTTP request logger middleware for node.js.
-const helmet = require('helmet'); // Helmet helps you secure your Express apps by setting various HTTP headers.
-const cors = require("cors"); //CORS is responsible for allowing or not asynchronous requests from other domains.
-
-//Custom packages
-const logger = require('./logger');
-
-//Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); //access the sample static file
 
-app.use(helmet());
+/**
+ * HTTP request logger middleware for node.js.
+ */
+const morgan = require('morgan');
 app.use(morgan('tiny'));
 
+/**
+ * Helmet helps you secure your Express apps by setting various HTTP headers.
+ */
+const helmet = require('helmet');
+app.use(helmet());
+
+/**
+ * CORS is responsible for allowing or not asynchronous requests 
+ * from other domains.
+ */
+const cors = require("cors");
 app.use(cors({
     origin: ["http://localhost:3000"],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-//Custom middleware
+/**
+ * Custom Middleware
+ */
+const logger = require('./middleware/logger');
 app.use(logger);
 
-//template engine
+/**
+ * Template engine
+ */
 app.set('view engine', 'pug');
 app.set('views', './views'); //defaul folder is view
 
-const books = [
-    { id: 1, name: 'Clean Architecture' },
-    { id: 2, name: 'FactFulness' },
-    { id: 3, name: 'The Pragmatic Programmer' },
-];
+/**
+ * Routes
+ */
+const home = require('./routes/home');
+const books = require('./routes/books');
+app.use('/', home);
+app.use('/api/books', books);
 
-//Loading template engine
-app.get('/', (req, res) => {
-    res.render('index', { title: 'My pug', message: 'This is a tribute to my pug called Sansa' });
-});
-
-app.get('/api/books', (req, res) => {
-    res.send(books);
-});
-
-
-app.post('/api/books', (req, res) => {
-    const { error } = validateBook(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
-    const book = {
-        id: books.length + 1,
-        name: req.body.name
-    };
-    books.push(book);
-    res.send(book);
-});
-
-app.put('/api/books/:id', (req, res) => {
-    const book = books.find(c => c.id === parseInt(req.params.id));
-    if (!book) return res.status(404).send('The book with the given ID was not found.');
-
-    const { error } = validateBook(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
-    book.name = req.body.name;
-    res.send(book);
-});
-
-app.delete('/api/books/:id', (req, res) => {
-    const book = books.find(c => c.id === parseInt(req.params.id));
-    if (!book) return res.status(404).send('The book with the given ID was not found.');
-
-    const index = books.indexOf(book);
-    books.splice(index, 1);
-
-    res.send(book);
-});
-
-app.get('/api/books/:id', (req, res) => {
-    const book = books.find(c => c.id === parseInt(req.params.id));
-    if (!book) return res.status(404).send('The book with the given ID was not found.');
-    res.send(book);
-});
-
-
-function validateBook(book) {
-    const schema = Joi.object({
-        name: Joi.string().min(3).required()
-    });
-
-    return schema.validate(book);
-}
-
+/**
+ * Listener and configs
+ */
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
